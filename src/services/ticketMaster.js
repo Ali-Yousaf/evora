@@ -17,6 +17,7 @@ export async function getEvents(keyword = "", category = "")
     params.append("apikey", API_KEY);
     params.append("size", "20");
     params.append("sort", "date,asc");
+    params.append("startDateTime", `${new Date().toISOString().split("T")[0]}T00:00:00Z`);
 
     if (keyword !== "")
     {
@@ -37,7 +38,11 @@ export async function getEvents(keyword = "", category = "")
 
     const data = await response.json();
 
-    return data._embedded?.events || [];
+    const today = new Date().toISOString().split("T")[0];
+
+    return (data._embedded?.events || []).filter((event) =>
+        !event.test && event.dates?.start?.localDate >= today
+    );
 }
 
 export async function getEventById(id)

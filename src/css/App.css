@@ -196,6 +196,21 @@
     line-height: 1.6;
 }
 
+.loading-message,
+.events-summary {
+    margin-bottom: 18px;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.loading-message {
+    padding: 24px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
 .auth-page {
     display: grid;
     place-items: center;

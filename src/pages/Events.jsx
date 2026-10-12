@@ -60,10 +60,12 @@ function Events()
                     <option value="music">Music</option>
                     <option value="sports">Sports</option>
                     <option value="arts">Arts & Theatre</option>
+                    <option value="family">Family</option>
+                    <option value="film">Film</option>
                 </select>
             </div>
 
-            {loading && <p>Loading events...</p>}
+            {loading && <p className="loading-message">Finding upcoming events...</p>}
 
             {error && <p className="error-message">Unable to load events: {error}</p>}
 
@@ -76,9 +78,12 @@ function Events()
             )}
 
             {!loading && !error && events.length > 0 && (
-                <div className="events-grid">
-                    {events.map((event) => <EventCard key={event.id} event={event} />)}
-                </div>
+                <>
+                    <p className="events-summary">Showing {events.length} upcoming events</p>
+                    <div className="events-grid">
+                        {events.map((event) => <EventCard key={event.id} event={event} />)}
+                    </div>
+                </>
             )}
         </section>
     );

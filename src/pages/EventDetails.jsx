@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { getEventById } from "../services/ticketMaster"
 
 function EventDetails()
 {
     const { id } = useParams();
+    const navigate = useNavigate();
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [isRegistered, setIsRegistered] = useState(false);
 
     useEffect(() =>
     {
@@ -22,6 +26,9 @@ function EventDetails()
             {
                 const data = await getEventById(id);
                 setEvent(data);
+
+                const registeredEvents = JSON.parse(localStorage.getItem("registeredEvents") || "[]");
+                setIsRegistered(registeredEvents.some((registeredEvent) => registeredEvent.id === data.id));
             }
             catch (err)
             {
@@ -35,6 +42,23 @@ function EventDetails()
 
         loadEvent();
     }, [id]);
+
+    function handleRegistration()
+    {
+        if (!isAuthenticated)
+        {
+            navigate("/login");
+            return;
+        }
+
+        const registeredEvents = JSON.parse(localStorage.getItem("registeredEvents") || "[]");
+
+        if (!registeredEvents.some((registeredEvent) => registeredEvent.id === event.id))
+        {
+            localStorage.setItem("registeredEvents", JSON.stringify([...registeredEvents, event]));
+            setIsRegistered(true);
+        }
+    }
 
     if (loading)
     {
@@ -90,12 +114,16 @@ function EventDetails()
                         <p className="event-description">{event.info}</p>
                     )}
 
-                    <button className="btn btn-primary" disabled>
-                        Register for Event
+                    <button className="btn btn-primary" onClick={handleRegistration} disabled={isRegistered}>
+                        {isRegistered ? "Registered" : "Register for Event"}
                     </button>
 
                     <p className="muted registration-note">
-                        Event registration will be available soon.
+                        {isRegistered
+                            ? "This event has been added to My Events."
+                            : isAuthenticated
+                                ? "Save this event to your personal collection."
+                                : "Log in to save this event to My Events."}
                     </p>
                 </div>
             </div>
