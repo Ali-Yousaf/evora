@@ -508,6 +508,25 @@
     padding-bottom: 12px;
 }
 
+.btn-cancel {
+    margin-top: 10px;
+    color: var(--primary);
+    background: #f2f0f8;
+}
+
+.btn-cancel:hover {
+    background: #e8e3f7;
+}
+
+.registered-events-section + .registered-events-section {
+    margin-top: 45px;
+}
+
+.registered-events-section h2 {
+    margin-bottom: 18px;
+    font-size: 1.5rem;
+}
+
 /* Event Details */
 
 .event-details {

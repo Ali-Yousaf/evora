@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function EventCard({ event })
+function EventCard({ event, onCancel })
 {
     const image = event.images?.find((img) => img.ratio === "16_9")?.url || event.images?.[0]?.url;
 
@@ -35,6 +35,12 @@ function EventCard({ event })
                 <Link to={`/events/${event.id}`} className="btn btn-primary event-button">
                     View Details
                 </Link>
+
+                {onCancel && (
+                    <button className="btn btn-cancel" onClick={() => onCancel(event.id)}>
+                        Cancel Registration
+                    </button>
+                )}
             </div>
         </div>
     );

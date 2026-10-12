@@ -9,6 +9,7 @@ function EventDetails()
     const { id } = useParams();
     const navigate = useNavigate();
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+    const currentUser = useSelector((state) => state.auth.user);
 
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -27,8 +28,16 @@ function EventDetails()
                 const data = await getEventById(id);
                 setEvent(data);
 
-                const registeredEvents = JSON.parse(localStorage.getItem("registeredEvents") || "[]");
-                setIsRegistered(registeredEvents.some((registeredEvent) => registeredEvent.id === data.id));
+                if (currentUser)
+                {
+                    const storageKey = `registeredEvents_${currentUser.id}`;
+                    const registeredEvents = JSON.parse(localStorage.getItem(storageKey) || "[]");
+                    setIsRegistered(registeredEvents.some((registeredEvent) => registeredEvent.id === data.id));
+                }
+                else
+                {
+                    setIsRegistered(false);
+                }
             }
             catch (err)
             {
@@ -41,7 +50,7 @@ function EventDetails()
         }
 
         loadEvent();
-    }, [id]);
+    }, [id, currentUser]);
 
     function handleRegistration()
     {
@@ -51,11 +60,12 @@ function EventDetails()
             return;
         }
 
-        const registeredEvents = JSON.parse(localStorage.getItem("registeredEvents") || "[]");
+        const storageKey = `registeredEvents_${currentUser.id}`;
+        const registeredEvents = JSON.parse(localStorage.getItem(storageKey) || "[]");
 
         if (!registeredEvents.some((registeredEvent) => registeredEvent.id === event.id))
         {
-            localStorage.setItem("registeredEvents", JSON.stringify([...registeredEvents, event]));
+            localStorage.setItem(storageKey, JSON.stringify([...registeredEvents, event]));
             setIsRegistered(true);
         }
     }
