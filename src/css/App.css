@@ -373,3 +373,43 @@
         width: 100%;
     }
 }
+
+/* Authentication */
+
+.error-message {
+    color: #dc3545;
+    background: #fff0f0;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    margin: 5px 0;
+}
+
+/* Navbar */
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.btn-logout {
+    background: #f2f0f8;
+    color: var(--primary);
+}
+
+.btn-logout:hover {
+    background: #e8e3f7;
+}
+
+/* Mobile */
+
+@media (max-width: 720px) {
+    .user-name {
+        display: none;
+    }
+
+    .btn-logout {
+        padding: 10px 14px;
+    }
+}
