@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getEvents } from "../../services/ticketMasterApi";
+import { getEvents } from "../../services/ticketMaster";
 
 export const fetchEvents = createAsyncThunk("events/fetchEvents", async ({ keyword = "", category = "" } = {}) =>
 {
