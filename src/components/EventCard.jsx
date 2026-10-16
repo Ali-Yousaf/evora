@@ -6,6 +6,9 @@ function EventCard({ event, onCancel })
 
     const date = event.dates?.start?.localDate;
     const venue = event._embedded?.venues?.[0];
+    const classification = event.classifications?.[0];
+    const category = [classification?.segment?.name, classification?.genre?.name, classification?.type?.name]
+        .find((name) => name && name.toLowerCase() !== "undefined") || "Event";
 
     return (
         <div className="event-card">
@@ -13,13 +16,15 @@ function EventCard({ event, onCancel })
                 {image && <img src={image} alt={event.name} />}
 
                 <span className="event-category">
-                    {event.classifications?.[0]?.segment?.name || "Event"}
+                    {category}
                 </span>
             </div>
 
             <div className="event-content">
                 <p className="event-date">
-                    {date || "Date TBA"}
+                    {date
+                        ? new Date(`${date}T12:00:00`).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })
+                        : "Date TBA"}
                 </p>
 
                 <h3>{event.name}</h3>

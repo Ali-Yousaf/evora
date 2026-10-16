@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import Events from "./pages/Events";
-import Login from "./pages/login";
+import Login from "./pages/Login";
 import Register from "./pages/Register";
 import EventDetails from "./pages/EventDetails";
 import MyEvents from "./pages/MyEvents";

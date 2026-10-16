@@ -57,11 +57,11 @@ function Events()
                 </div>
                 <select value={category} onChange={handleCategoryChange} aria-label="Filter events by category">
                     <option value="">All Categories</option>
-                    <option value="music">Music</option>
-                    <option value="sports">Sports</option>
-                    <option value="arts">Arts & Theatre</option>
-                    <option value="family">Family</option>
-                    <option value="film">Film</option>
+                    <option value="Music">Music</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Arts & Theatre">Arts & Theatre</option>
+                    <option value="Family">Family</option>
+                    <option value="Film">Film</option>
                 </select>
             </div>
 

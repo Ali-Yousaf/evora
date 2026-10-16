@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getEvents } from "../../services/ticketMaster";
 
-export const fetchEvents = createAsyncThunk("events/fetchEvents", async ({ keyword = "", category = "" } = {}) =>
+export const fetchEvents = createAsyncThunk("events/fetchEvents", async ({ keyword = "", category = "" } = {}, { signal }) =>
 {
-    const events = await getEvents(keyword, category);
+    const events = await getEvents(keyword, category, signal);
 
     return events;
 });
@@ -11,7 +11,8 @@ export const fetchEvents = createAsyncThunk("events/fetchEvents", async ({ keywo
 const initialState = {
     events: [],
     loading: false,
-    error: null
+    error: null,
+    currentRequestId: null
 };
 
 const eventsSlice = createSlice({
@@ -21,20 +22,29 @@ const eventsSlice = createSlice({
     extraReducers: (builder) =>
     {
         builder
-            .addCase(fetchEvents.pending, (state) =>
+            .addCase(fetchEvents.pending, (state, action) =>
             {
                 state.loading = true;
                 state.error = null;
+                state.currentRequestId = action.meta.requestId;
             })
             .addCase(fetchEvents.fulfilled, (state, action) =>
             {
-                state.loading = false;
-                state.events = action.payload;
+                if (state.currentRequestId === action.meta.requestId)
+                {
+                    state.loading = false;
+                    state.events = action.payload;
+                    state.currentRequestId = null;
+                }
             })
             .addCase(fetchEvents.rejected, (state, action) =>
             {
-                state.loading = false;
-                state.error = action.error.message;
+                if (state.currentRequestId === action.meta.requestId)
+                {
+                    state.loading = false;
+                    state.error = action.error.message;
+                    state.currentRequestId = null;
+                }
             });
     }
 });

@@ -9,7 +9,7 @@ function ensureApiKey()
     }
 }
 
-export async function getEvents(keyword = "", category = "")
+export async function getEvents(keyword = "", category = "", signal)
 {
     ensureApiKey();
     const params = new URLSearchParams();
@@ -29,7 +29,7 @@ export async function getEvents(keyword = "", category = "")
         params.append("classificationName", category);
     }
 
-    const response = await fetch(`${BASE_URL}/events.json?${params.toString()}`);
+    const response = await fetch(`${BASE_URL}/events.json?${params.toString()}`, { signal });
 
     if (!response.ok)
     {
@@ -48,7 +48,8 @@ export async function getEvents(keyword = "", category = "")
 export async function getEventById(id)
 {
     ensureApiKey();
-    const response = await fetch(`${BASE_URL}/events/${encodeURIComponent(id)}.json?apikey=${API_KEY}`);
+    const params = new URLSearchParams({ apikey: API_KEY });
+    const response = await fetch(`${BASE_URL}/events/${encodeURIComponent(id)}.json?${params.toString()}`);
 
     if (!response.ok)
     {

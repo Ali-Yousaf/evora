@@ -1,20 +1,25 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { getEventById } from "../services/ticketMaster"
+import { registerEvent } from "../features/registrations/registrationsSlice";
+
+const EMPTY_EVENTS = [];
 
 function EventDetails()
 {
     const { id } = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
     const currentUser = useSelector((state) => state.auth.user);
+    const registeredEvents = useSelector((state) => state.registrations.byUser[currentUser?.id] || EMPTY_EVENTS);
 
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-    const [isRegistered, setIsRegistered] = useState(false);
+    const isRegistered = event && registeredEvents.some((registeredEvent) => registeredEvent.id === event.id);
 
     useEffect(() =>
     {
@@ -27,17 +32,6 @@ function EventDetails()
             {
                 const data = await getEventById(id);
                 setEvent(data);
-
-                if (currentUser)
-                {
-                    const storageKey = `registeredEvents_${currentUser.id}`;
-                    const registeredEvents = JSON.parse(localStorage.getItem(storageKey) || "[]");
-                    setIsRegistered(registeredEvents.some((registeredEvent) => registeredEvent.id === data.id));
-                }
-                else
-                {
-                    setIsRegistered(false);
-                }
             }
             catch (err)
             {
@@ -50,7 +44,7 @@ function EventDetails()
         }
 
         loadEvent();
-    }, [id, currentUser]);
+    }, [id]);
 
     function handleRegistration()
     {
@@ -60,14 +54,7 @@ function EventDetails()
             return;
         }
 
-        const storageKey = `registeredEvents_${currentUser.id}`;
-        const registeredEvents = JSON.parse(localStorage.getItem(storageKey) || "[]");
-
-        if (!registeredEvents.some((registeredEvent) => registeredEvent.id === event.id))
-        {
-            localStorage.setItem(storageKey, JSON.stringify([...registeredEvents, event]));
-            setIsRegistered(true);
-        }
+        dispatch(registerEvent({ userId: currentUser.id, event }));
     }
 
     if (loading)
@@ -87,6 +74,10 @@ function EventDetails()
 
     const venue = event._embedded?.venues?.[0];
     const image = event.images?.find((img) => img.ratio === "16_9")?.url || event.images?.[0]?.url;
+    const classification = event.classifications?.[0];
+    const category = [classification?.segment?.name, classification?.genre?.name, classification?.type?.name]
+        .find((name) => name && name.toLowerCase() !== "undefined") || "Event";
+    const localDate = event.dates?.start?.localDate;
 
     return (
         <section className="page">
@@ -101,13 +92,15 @@ function EventDetails()
 
                 <div className="details-content">
                     <p className="eyebrow">
-                        {event.classifications?.[0]?.segment?.name || "EVENT"}
+                        {category}
                     </p>
 
                     <h1>{event.name}</h1>
 
                     <div className="details-info">
-                        <p><strong>Date:</strong> {event.dates?.start?.localDate || "TBA"}</p>
+                        <p><strong>Date:</strong> {localDate
+                            ? new Date(`${localDate}T12:00:00`).toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" })
+                            : "TBA"}</p>
 
                         <p><strong>Time:</strong> {event.dates?.start?.localTime || "TBA"}</p>
 
@@ -117,7 +110,7 @@ function EventDetails()
 
                         <p><strong>Country:</strong> {venue?.country?.name || "TBA"}</p>
 
-                        <p><strong>Category:</strong> {event.classifications?.[0]?.segment?.name || "TBA"}</p>
+                        <p><strong>Category:</strong> {category}</p>
                     </div>
 
                     {event.info && (

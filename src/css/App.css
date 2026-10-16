@@ -14,7 +14,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 24px;
-    padding: 20px 7%;
+    padding: 18px max(5%, calc((100% - 1200px) / 2));
     background: var(--surface);
     border-bottom: 1px solid var(--border);
 }
@@ -23,7 +23,7 @@
     font-family: "Manrope", sans-serif;
     font-size: 1.8rem;
     font-weight: 800;
-    letter-spacing: -1.5px;
+    letter-spacing: 0;
 }
 
 .brand span {
@@ -37,7 +37,7 @@
 }
 
 .nav-links a, .login-link {
-    color: #62616a;
+    color: var(--muted);
     font-size: 0.93rem;
     font-weight: 600;
     transition: color 0.2s ease;
@@ -54,7 +54,7 @@
     align-items: center;
     gap: 8px;
     border: 0;
-    border-radius: 9px;
+    border-radius: 8px;
     padding: 12px 20px;
     font-weight: 700;
     font-size: 0.92rem;
@@ -84,21 +84,21 @@
 }
 
 .page {
-    width: min(1120px, 86%);
+    width: min(1200px, 90%);
     margin: 0 auto;
     padding: 48px 0 72px;
 }
 
 .hero {
-    padding: 65px 24px 70px;
+    padding: 58px 24px 62px;
     text-align: center;
-    border-radius: 24px;
-    background: linear-gradient(135deg, #f0ebff 0%, #fff3f0 100%);
+    border-radius: 16px;
+    background: linear-gradient(120deg, #e7f2ec 0%, #f5f4e9 58%, #fbeee7 100%);
 }
 
 .eyebrow {
     margin-bottom: 12px;
-    color: var(--primary);
+    color: var(--accent);
     font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 1.7px;
@@ -106,11 +106,10 @@
 
 .hero h1 {
     margin-bottom: 18px;
-    font-size: clamp(2.5rem, 5vw, 4.3rem);
+    font-size: 3.4rem;
     line-height: 1.12;
-    letter-spacing: -2px;
+    letter-spacing: 0;
 }
-
 .hero-description {
     max-width: 510px;
     margin: 0 auto 28px;
@@ -127,7 +126,7 @@
     background: #ffffff;
     border: 1px solid var(--border);
     border-radius: 12px;
-    box-shadow: 0 8px 30px #2820440a;
+    box-shadow: 0 8px 24px #183c3010;
 }
 
 .search-bar input {
@@ -149,8 +148,12 @@
 
 .section-heading h1, .section-heading h2 {
     margin-bottom: 8px;
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
-    letter-spacing: -1px;
+    font-size: 2rem;
+    letter-spacing: 0;
+}
+
+.section-heading > div > p:last-child {
+    margin-bottom: 0;
 }
 
 .section-heading select {
@@ -180,7 +183,7 @@
     margin-bottom: 18px;
     border-radius: 16px;
     color: var(--primary);
-    background: #f0ebff;
+    background: #e7f2ec;
     font-size: 1.8rem;
 }
 
@@ -223,14 +226,14 @@
     padding: 38px;
     background: #ffffff;
     border: 1px solid var(--border);
-    border-radius: 18px;
-    box-shadow: 0 12px 40px #28204408;
+    border-radius: 12px;
+    box-shadow: 0 12px 32px #183c300d;
 }
 
 .auth-card h1 {
     margin-bottom: 10px;
     font-size: 2rem;
-    letter-spacing: -1px;
+    letter-spacing: 0;
 }
 
 .muted {
@@ -254,15 +257,15 @@
 .auth-form input {
     width: 100%;
     padding: 13px 14px;
-    border: 1px solid #dedce5;
-    border-radius: 9px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .auth-form input:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px #6c4ce31a;
+    box-shadow: 0 0 0 3px #176b551f;
 }
 
 .auth-switch {
@@ -353,7 +356,7 @@
     }
 
     .hero h1 {
-        letter-spacing: -1.3px;
+        font-size: 2.45rem;
     }
 
     .section-heading {
@@ -392,8 +395,8 @@
 /* Authentication */
 
 .error-message {
-    color: #dc3545;
-    background: #fff0f0;
+    color: #a33e37;
+    background: #fff0ed;
     padding: 10px 12px;
     border-radius: 6px;
     font-size: 0.85rem;
@@ -409,12 +412,12 @@
 }
 
 .btn-logout {
-    background: #f2f0f8;
+    background: #edf2ed;
     color: var(--primary);
 }
 
 .btn-logout:hover {
-    background: #e8e3f7;
+    background: #e0eae1;
 }
 
 /* Mobile */
@@ -433,8 +436,8 @@
 
 .events-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
 }
 
 .event-card {
@@ -443,7 +446,7 @@
     overflow: hidden;
     background: #ffffff;
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 8px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -455,7 +458,7 @@
 .event-image {
     position: relative;
     height: 190px;
-    background: #eeeaf7;
+    background: #e8eee9;
 }
 
 .event-image img {
@@ -469,7 +472,7 @@
     left: 12px;
     bottom: 12px;
     padding: 6px 10px;
-    border-radius: 6px;
+    border-radius: 4px;
     background: #ffffff;
     color: var(--primary);
     font-size: 0.75rem;
@@ -494,6 +497,7 @@
     margin-bottom: 12px;
     font-size: 1.1rem;
     line-height: 1.5;
+    overflow-wrap: anywhere;
 }
 
 .event-location {
@@ -511,11 +515,11 @@
 .btn-cancel {
     margin-top: 10px;
     color: var(--primary);
-    background: #f2f0f8;
+    background: #edf2ed;
 }
 
 .btn-cancel:hover {
-    background: #e8e3f7;
+    background: #e0eae1;
 }
 
 .registered-events-section + .registered-events-section {
@@ -533,7 +537,7 @@
     overflow: hidden;
     background: #ffffff;
     border: 1px solid var(--border);
-    border-radius: 18px;
+    border-radius: 12px;
 }
 
 .details-image {
@@ -549,7 +553,7 @@
 
 .details-content h1 {
     margin-bottom: 25px;
-    font-size: clamp(1.8rem, 4vw, 2.7rem);
+    font-size: 2.4rem;
 }
 
 .details-info {
@@ -558,7 +562,7 @@
 
 .details-info p {
     margin-bottom: 12px;
-    color: #555;
+    color: var(--muted);
 }
 
 .details-info strong {
@@ -599,7 +603,23 @@
         padding: 22px;
     }
 
+    .details-content h1 {
+        font-size: 1.9rem;
+    }
+
     .event-image {
         height: 210px;
+    }
+
+    .hero h1 {
+        font-size: 1.9rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
     }
 }

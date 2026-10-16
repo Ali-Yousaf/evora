@@ -1,19 +1,17 @@
 
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import EventCard from "../components/EventCard";
+import { cancelRegistration } from "../features/registrations/registrationsSlice";
+
+const EMPTY_EVENTS = [];
 
 function MyEvents()
 {
     const currentUser = useSelector((state) => state.auth.user);
-    const storageKey = `registeredEvents_${currentUser.id}`;
-    const [registeredEvents] = useState(() =>
-        JSON.parse(localStorage.getItem(`registeredEvents_${currentUser.id}`) || "[]")
-    );
-
-    const [events, setEvents] = useState(registeredEvents);
+    const dispatch = useDispatch();
+    const events = useSelector((state) => state.registrations.byUser[currentUser?.id] || EMPTY_EVENTS);
     const today = new Date().toISOString().split("T")[0];
     const upcomingEvents = events.filter((event) =>
         !event.dates?.start?.localDate || event.dates.start.localDate >= today
@@ -24,9 +22,7 @@ function MyEvents()
 
     function handleCancel(eventId)
     {
-        const remainingEvents = events.filter((event) => event.id !== eventId);
-        localStorage.setItem(storageKey, JSON.stringify(remainingEvents));
-        setEvents(remainingEvents);
+        dispatch(cancelRegistration({ userId: currentUser.id, eventId }));
     }
 
     return (
